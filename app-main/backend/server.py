@@ -527,7 +527,11 @@ async def root():
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=[
+        "https://regal-dasik-773f71.netlify.app/",
+        "http://localhost:3000",
+        "http://localhost:5173"
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
