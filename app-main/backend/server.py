@@ -526,12 +526,12 @@ async def root():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=False,
     allow_origins=[
-        "zingy-monstera-7d0ec6.netlify.app",
+        "https://zingy-monstera-7d0ec6.netlify.app",
         "http://localhost:3000",
         "http://localhost:5173",
     ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
