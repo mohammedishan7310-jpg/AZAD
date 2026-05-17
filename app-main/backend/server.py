@@ -526,11 +526,11 @@ async def root():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_origins=[
-        "https://regal-dasik-773f71.netlify.app/",
+        "https://graceful-shortbread-f289a5.netlify.app",
         "http://localhost:3000",
-        "http://localhost:5173"
+        "http://localhost:5173",
     ],
     allow_methods=["*"],
     allow_headers=["*"],
