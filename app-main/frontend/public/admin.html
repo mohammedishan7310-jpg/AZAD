@@ -176,7 +176,7 @@
         async function setStatus(id, status) {
             try {
                 const fd = new FormData(); fd.append("status", status);
-                const res = await fetch("/api/admin/admissions/" + id, { method: "PATCH", credentials: "include", body: fd });
+                const res = await fetch(API + "/admin/admissions/" + id, { method: "PATCH", body: fd });
                 if (!res.ok) throw new Error("Update failed");
                 toast("Status updated", "success"); closeModal(); renderPanel();
             } catch (e) { toast(e.message, "error"); }
