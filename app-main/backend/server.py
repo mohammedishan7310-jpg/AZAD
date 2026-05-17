@@ -13,7 +13,7 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Body, File, UploadFile, Form
 from fastapi.responses import Response as FastAPIResponse
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
