@@ -5,7 +5,7 @@
 // REACT_APP_BACKEND_URL is injected by CRA at build time. In our plain
 // HTML pages we hardcode the relative /api path since backend is served
 // through the same ingress.
-const API = 'https://app-gtvw.onrender.com/api';
+const API = 'https://azad-backend-8mik.onrender.com';
 
 // ---- fetch wrapper ----
 async function apiFetch(path, options = {}) {
