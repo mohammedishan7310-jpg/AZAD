@@ -290,20 +290,30 @@ async def serve_file(path: str):
 
 
 # ---------- Admin routes ----------
-@api_router.get("/admin/admissions")
-async def admin_list_admissions(current=Depends(get_current_user)):
-    items = await db.admissions.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
-    return items
-
 
 @api_router.patch("/admin/admissions/{admission_id}")
-async def admin_update_admission(admission_id: str, status: str = Form(...), current=Depends(get_current_user)):
+async def admin_update_admission(
+    admission_id: str,
+    data: dict = Body(...),
+    current=Depends(get_current_user)
+):
+    status = data.get("status")
+
     if status not in ("pending", "approved", "rejected"):
         raise HTTPException(status_code=400, detail="Invalid status")
-    res = await db.admissions.update_one({"id": admission_id}, {"$set": {"status": status}})
+
+    res = await db.admissions.update_one(
+        {"id": admission_id},
+        {"$set": {"status": status}}
+    )
+
     if res.matched_count == 0:
         raise HTTPException(status_code=404, detail="Not found")
+
     return {"ok": True}
+
+
+
 
 
 @api_router.get("/admin/contacts")
