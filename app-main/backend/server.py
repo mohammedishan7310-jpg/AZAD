@@ -528,7 +528,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_credentials=False,
     allow_origins=[
-        "https://graceful-shortbread-f289a5.netlify.app",
+        "zingy-monstera-7d0ec6.netlify.app",
         "http://localhost:3000",
         "http://localhost:5173",
     ],
