@@ -223,13 +223,9 @@ async def login(payload: LoginRequest, response: Response):
     admin_username = os.environ.get("ADMIN_USERNAME", "admin")
     admin_password = os.environ.get("ADMIN_PASSWORD", "Admin@2026")
 
-    email_ok = payload.email == admin_email or payload.email == admin_username
-    password_ok = payload.password == admin_password
-
-    if email_ok and password_ok:
+    if (payload.email == admin_email or payload.email == admin_username) and payload.password == admin_password:
         token = create_access_token("admin", payload.email)
         set_auth_cookie(response, token)
-
         return {
             "id": "admin",
             "email": payload.email,
