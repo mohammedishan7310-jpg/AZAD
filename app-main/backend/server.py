@@ -26,20 +26,19 @@ db = client[os.environ['DB_NAME']]
 
 # ---------- App ----------
 app = FastAPI(title="Azad School API")
-
+api_router = APIRouter(prefix="/api")
 @app.middleware("http")
-async def force_cors(request: Request, call_next):
-    if request.method == "OPTIONS":
-        response = Response(status_code=200)
-    else:
-        response = await call_next(request)
-
-    response.headers["Access-Control-Allow-Origin"] = "https://zingy-monstera-7d0ec6.netlify.app"
-    response.headers["Access-Control-Allow-Methods"] = "GET,POST,PATCH,PUT,DELETE,OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "*"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://zingy-monstera-7d0ec6.netlify.app",
+        "http://localhost:3000",
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 api_router = APIRouter(prefix="/api")
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -220,13 +219,8 @@ async def root():
 
 @api_router.post("/auth/login")
 async def login(payload: LoginRequest, response: Response):
-    admin_email = os.environ.get("ADMIN_EMAIL", "admin@azadschool.edu")
-    admin_username = os.environ.get("ADMIN_USERNAME", "admin")
-    admin_password = os.environ.get("ADMIN_PASSWORD", "Admin@2026")
-
-    if (payload.email == admin_email or payload.email == admin_username) and payload.password == admin_password:
+    if payload.email == "admin@azadschool.edu" and payload.password == "Admin@2026":
         token = create_access_token("admin", payload.email)
-        set_auth_cookie(response, token)
         return {
             "id": "admin",
             "email": payload.email,
@@ -539,6 +533,17 @@ async def shutdown_db_client():
 
 # ---------- Mount ----------
 app.include_router(api_router)
+@app.middleware("http")
+async def add_cors_headers(request: Request, call_next):
+    if request.method == "OPTIONS":
+        response = Response(status_code=200)
+    else:
+        response = await call_next(request)
+
+    response.headers["Access-Control-Allow-Origin"] = "https://zingy-monstera-7d0ec6.netlify.app"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
 @app.get("/")
 async def root():
     return {"message": "Azad School API Running"}
