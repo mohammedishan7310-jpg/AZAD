@@ -27,18 +27,6 @@ db = client[os.environ['DB_NAME']]
 # ---------- App ----------
 app = FastAPI(title="Azad School API")
 api_router = APIRouter(prefix="/api")
-@app.middleware("http")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "https://zingy-monstera-7d0ec6.netlify.app",
-        "http://localhost:3000",
-        "http://localhost:5173",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 api_router = APIRouter(prefix="/api")
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
