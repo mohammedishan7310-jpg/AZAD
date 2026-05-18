@@ -27,6 +27,13 @@ db = client[os.environ['DB_NAME']]
 # ---------- App ----------
 app = FastAPI(title="Azad School API")
 api_router = APIRouter(prefix="/api")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://zingy-monstera-7d0ec6.netlify.app"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 api_router = APIRouter(prefix="/api")
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -521,17 +528,7 @@ async def shutdown_db_client():
 
 # ---------- Mount ----------
 app.include_router(api_router)
-@app.middleware("http")
-async def add_cors_headers(request: Request, call_next):
-    if request.method == "OPTIONS":
-        response = Response(status_code=200)
-    else:
-        response = await call_next(request)
 
-    response.headers["Access-Control-Allow-Origin"] = "https://zingy-monstera-7d0ec6.netlify.app"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, PUT, DELETE, OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-    return response
 @app.get("/")
 async def root():
     return {"message": "Azad School API Running"}
