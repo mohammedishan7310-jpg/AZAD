@@ -26,19 +26,11 @@ db = client[os.environ['DB_NAME']]
 
 # ---------- App ----------
 app = FastAPI(title="Azad School API")
-frontend_origins = [
-    origin.strip()
-    for origin in os.environ.get(
-        "FRONTEND_ORIGINS",
-        "https://zingy-monstera-7d0ec6.netlify.app,http://localhost:3000,http://localhost:5173"
-    ).split(",")
-    if origin.strip()
-]
+from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=frontend_origins,
-    allow_origin_regex=r"https://.*\.netlify\.app",
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
