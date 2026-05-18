@@ -174,16 +174,20 @@
         }
         function closeModal(e) { if (e && e.target.id !== "admModal") return; const m = document.getElementById("admModal"); if (m) { m.classList.add("hidden"); m.classList.remove("flex"); } }
         async function setStatus(id, status) {
-            try {
-                const res = await apiFetch("/admin/admissions/" + id, {
-                  method: "PATCH",
-                body: JSON.stringify({ status })
-                });
-                if (!res.ok) throw new Error("Update failed");
-                toast("Status updated", "success"); closeModal(); renderPanel();
-            } catch (e) { toast(e.message, "error"); }
-        }
+    try {
+        await apiFetch("/admin/admissions/" + id, {
+            method: "PATCH",
+            body: JSON.stringify({ status })
+        });
 
+        toast("Status updated", "success");
+        closeModal();
+        renderPanel();
+
+    } catch (e) {
+        toast(e.message, "error");
+    }
+}
         // ---- CONTACTS ----
         async function renderContacts(panel) {
             panel.innerHTML = `<div class="p-6 md:p-10" data-testid="admin-contacts-panel">
